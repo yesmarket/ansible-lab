@@ -19,6 +19,7 @@ resource "azurerm_linux_virtual_machine" "this" {
   disable_password_authentication = true
 
   custom_data = base64encode(templatefile("${path.module}/templates/bootstrap-script.tpl", {
+    username               = var.username
     ssh_public_key         = var.ssh_public_key
     ssh_private_key_base64 = var.ssh_private_key_base64
     ssh_passphrase         = var.ssh_passphrase
@@ -41,31 +42,33 @@ resource "azurerm_linux_virtual_machine" "this" {
 
   source_image_id = var.source_image_id
 
-  #source_image_reference {
-  #  publisher = var.source_image_publisher
-  #  offer     = var.source_image_offer
-  #  sku       = var.source_image_sku
-  #  version   = var.source_image_version
-  #}
+#  source_image_reference {
+#    publisher = var.source_image_publisher
+#    offer     = var.source_image_offer
+#    sku       = var.source_image_sku
+#    version   = var.source_image_version
+#  }
 
-  provisioner "remote-exec" {
-    inline = [
-      "base64 -d <<< ${var.ssh_private_key_base64} >> ~/.ssh/id_rsa",
-      "echo ${var.ssh_public_key} >> ~/.ssh/id_rsa.pub",
-      "sudo chmod 600 ~/.ssh/id_rsa",
-      "sudo chmod 600 ~/.ssh/id_rsa.pub",
-      "eval $(ssh-agent -s)",
-      "echo \"echo ${var.ssh_passphrase}\" >> ./passphrase",
-      "sudo chmod 700 ./passphrase",
-      "DISPLAY=1 SSH_ASKPASS=\"./passphrase\" ssh-add ~/.ssh/id_rsa < /dev/null",
-      "rm ./passphrase",
-    ]
-
-    connection {
-      type        = "ssh"
-      host        = self.private_ip_address
-      user        = var.username
-      private_key = base64decode(var.ssh_private_key_base64)
-    }
-  }
+#  provisioner "remote-exec" {
+#    inline = [
+#      "base64 -d <<< ${var.ssh_private_key_base64} >> ~/.ssh/id_rsa",
+#      "echo ${var.ssh_public_key} >> ~/.ssh/id_rsa.pub",
+#      "sudo chmod 600 ~/.ssh/id_rsa",
+#      "sudo chmod 600 ~/.ssh/id_rsa.pub",
+#      "eval $(ssh-agent -s)",
+#      "echo \"echo ${var.ssh_passphrase}\" >> ./passphrase",
+#      "sudo chmod 700 ./passphrase",
+#      "DISPLAY=1 SSH_ASKPASS=\"./passphrase\" ssh-add ~/.ssh/id_rsa < /dev/null",
+#      "rm ./passphrase",
+#    ]
+#
+#    connection {
+#      host        = self.private_ip_address
+#      type        = "ssh"
+#      user        = "root"
+#      agent       = true
+#      #user        = "var.username"
+#      #private_key = base64decode(var.ssh_private_key_base64)
+#    }
+#  }
 }
