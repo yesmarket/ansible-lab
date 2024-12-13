@@ -38,6 +38,13 @@ resource "azurerm_subnet" "private" {
   address_prefixes     = [cidrsubnet(var.vnet_cidr, 4, 1)]
 }
 
+resource "azurerm_subnet" "public" {
+  name                 = "${local.naming_prefix}-public-snet"
+  resource_group_name  = azurerm_resource_group.this.name
+  virtual_network_name = azurerm_virtual_network.this.name
+  address_prefixes     = [cidrsubnet(var.vnet_cidr, 4, 2)]
+}
+
 # DNS
 
 resource "azurerm_private_dns_zone" "this" {
@@ -69,6 +76,16 @@ resource "azurerm_private_dns_resolver_inbound_endpoint" "this" {
   }
 }
 
+# NAT
+
+module "natg" {
+  source              = "./modules/nat-gateway"
+  naming_prefix       = local.naming_prefix
+  resource_group_name = azurerm_resource_group.this.name
+  location            = azurerm_resource_group.this.location
+  subnet_id           = azurerm_subnet.public.id
+}
+
 # tailscale subnet-router
 
 module "tailscale_subnet_router" {
@@ -90,11 +107,14 @@ module "ansible_control_node" {
   naming_prefix          = local.naming_prefix
   resource_group_name    = azurerm_resource_group.this.name
   location               = azurerm_resource_group.this.location
-  subnet_id              = azurerm_subnet.private.id
+  subnet_id              = azurerm_subnet.public.id
   username               = var.username
+  password               = var.password
   ssh_public_key         = var.ssh_public_key
   ssh_private_key_base64 = var.ssh_private_key_base64
   ssh_passphrase         = var.ssh_passphrase
+  email                  = var.email
+  name                   = var.name
 }
 
 # Linux VM inventory

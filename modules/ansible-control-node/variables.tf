@@ -20,7 +20,13 @@ variable "subnet_id" {
 
 variable "username" {
   type        = string
-  description = "The SSH username for accessing the ansible control node."
+  description = "The SSH/RDP username for accessing the ansible control node."
+}
+
+variable "password" {
+  type        = string
+  description = "The RDP password for accessing the ansible control node."
+  sensitive   = true
 }
 
 variable "ssh_public_key" {
@@ -43,7 +49,7 @@ variable "ssh_passphrase" {
 variable "vm_size" {
   type        = string
   description = "The size of the ansible control node VM."
-  default     = "Standard_F2"
+  default     = "Standard_F8"
 }
 
 variable "disk_caching" {
@@ -86,4 +92,14 @@ variable "source_image_version" {
   type        = string
   description = "The source image version"
   default     = "latest"
+}
+
+variable "email" {
+  type        = string
+  description = "The user email for git config"
+}
+
+variable "name" {
+  type        = string
+  description = "The user name for git config"
 }

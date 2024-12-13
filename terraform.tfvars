@@ -5,3 +5,5 @@ ssh_public_key           = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDOf5+mQs1iygCd
 tailscale_subnet_routers = ["primary"]
 private_dns              = "ryanbartsch.com"
 inventory                = ["test1", "test2"]
+email					 = "rbartsch@yandex.com"
+name					 = "Ryan Bartsch"

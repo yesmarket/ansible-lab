@@ -27,8 +27,14 @@ variable "location" {
 
 variable "username" {
   type        = string
-  description = "The SSH username for accessing VMs."
+  description = "The SSH/RDP username for accessing VMs."
   default     = "ryanbartsch"
+}
+
+variable "password" {
+  type        = string
+  description = "The RDP password for accessing VMs."
+  sensitive   = true
 }
 
 variable "ssh_public_key" {
@@ -75,4 +81,14 @@ variable "vnet_cidr" {
   type        = string
   description = "CIDR range for the network VNET."
   default     = "10.0.0.0/24"
+}
+
+variable "email" {
+  type        = string
+  description = "The user email for git config"
+}
+
+variable "name" {
+  type        = string
+  description = "The user name for git config"
 }
