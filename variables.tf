@@ -25,13 +25,13 @@ variable "location" {
   default     = "Australia East"
 }
 
-variable "username" {
+variable "admin_username" {
   type        = string
   description = "The SSH/RDP username for accessing VMs."
   default     = "ryanbartsch"
 }
 
-variable "password" {
+variable "admin_password" {
   type        = string
   description = "The RDP password for accessing VMs."
   sensitive   = true
@@ -48,9 +48,9 @@ variable "ssh_private_key_base64" {
   sensitive   = true
 }
 
-variable "ssh_passphrase" {
+variable "awx_admin_password" {
   type        = string
-  description = "The SSH private key passphrase."
+  description = "The admin password to log into AWX."
   sensitive   = true
 }
 
@@ -83,12 +83,15 @@ variable "vnet_cidr" {
   default     = "10.0.0.0/24"
 }
 
-variable "email" {
+variable "git_name" {
+  type        = string
+  description = "The user name for git config"
+}
+
+variable "git_email" {
   type        = string
   description = "The user email for git config"
 }
 
-variable "name" {
-  type        = string
-  description = "The user name for git config"
-}
+
+

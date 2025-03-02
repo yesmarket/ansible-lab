@@ -18,7 +18,7 @@ variable "subnet_id" {
   description = "The subnet in which to delpoy the subnet-router."
 }
 
-variable "username" {
+variable "admin_username" {
   type        = string
   description = "The SSH username for accessing the subnet-router."
 }
@@ -61,4 +61,5 @@ variable "source_image_id" {
   type        = string
   description = "The tailscale subnet-router custom image id"
   default     = "/subscriptions/46934691-fbae-44fe-abb8-900c33ca8095/resourceGroups/images/providers/Microsoft.Compute/images/tailscale-subnet-router"
+  #default     = "/subscriptions/1127d5c9-157b-48b2-9220-9795765f71ac/resourceGroups/images/providers/Microsoft.Compute/images/tailscale-subnet-router"
 }

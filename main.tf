@@ -94,7 +94,7 @@ module "tailscale_subnet_router" {
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
   subnet_id           = azurerm_subnet.private.id
-  username            = var.username
+  admin_username      = var.admin_username
   ssh_public_key      = var.ssh_public_key
   auth_key            = var.tailscale_subnet_router_auth_key
   advertised_routes   = var.vnet_cidr
@@ -108,13 +108,15 @@ module "ansible_control_node" {
   resource_group_name    = azurerm_resource_group.this.name
   location               = azurerm_resource_group.this.location
   subnet_id              = azurerm_subnet.public.id
-  username               = var.username
-  password               = var.password
+  admin_username         = var.admin_username
+  admin_password         = var.admin_password
   ssh_public_key         = var.ssh_public_key
   ssh_private_key_base64 = var.ssh_private_key_base64
-  ssh_passphrase         = var.ssh_passphrase
-  email                  = var.email
-  name                   = var.name
+  awx_admin_password     = var.awx_admin_password
+  git_email              = var.git_email
+  git_name               = var.git_name
+  private_dns_zone       = azurerm_private_dns_zone.this.name
+  inventory              = var.inventory
 }
 
 # Linux VM inventory
@@ -127,7 +129,7 @@ module "linux_vm" {
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
   subnet_id           = azurerm_subnet.private.id
-  username            = var.username
+  admin_username      = var.admin_username
   ssh_public_key      = var.ssh_public_key
   public              = false
   private_dns_zone    = azurerm_private_dns_zone.this.name

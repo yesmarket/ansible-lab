@@ -18,12 +18,12 @@ variable "subnet_id" {
   description = "The subnet in which to delpoy the ansible control node."
 }
 
-variable "username" {
+variable "admin_username" {
   type        = string
   description = "The SSH/RDP username for accessing the ansible control node."
 }
 
-variable "password" {
+variable "admin_password" {
   type        = string
   description = "The RDP password for accessing the ansible control node."
   sensitive   = true
@@ -40,9 +40,9 @@ variable "ssh_private_key_base64" {
   sensitive   = true
 }
 
-variable "ssh_passphrase" {
+variable "awx_admin_password" {
   type        = string
-  description = "The SSH private key passphrase."
+  description = "The admin password to log into AWX."
   sensitive   = true
 }
 
@@ -68,6 +68,7 @@ variable "source_image_id" {
   type        = string
   description = "The ansible control node custom image id"
   default     = "/subscriptions/46934691-fbae-44fe-abb8-900c33ca8095/resourceGroups/images/providers/Microsoft.Compute/images/ansible-control-node"
+  #default     = "/subscriptions/1127d5c9-157b-48b2-9220-9795765f71ac/resourceGroups/images/providers/Microsoft.Compute/images/ansible-control-node"
 }
 
 variable "source_image_publisher" {
@@ -94,12 +95,34 @@ variable "source_image_version" {
   default     = "latest"
 }
 
-variable "email" {
+variable "git_name" {
+  type        = string
+  description = "The user name for git config"
+}
+
+variable "git_email" {
   type        = string
   description = "The user email for git config"
 }
 
-variable "name" {
+variable "private_dns_zone" {
   type        = string
-  description = "The user name for git config"
+  description = "The private DNS zone for the VM."
+}
+
+variable "minikube_cpus" {
+  type        = string
+  description = "The number of CPUs to allocate to minikube."
+  default     = 2
+}
+
+variable "minikube_memory" {
+  type        = string
+  description = "The amount of memory to allocate to minikube."
+  default     = 4000
+}
+
+variable "inventory" {
+  type        = list(any)
+  description = "The list of Ansible managed nodes."
 }

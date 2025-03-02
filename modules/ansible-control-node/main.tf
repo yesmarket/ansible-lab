@@ -15,17 +15,20 @@ resource "azurerm_linux_virtual_machine" "this" {
   resource_group_name             = var.resource_group_name
   location                        = var.location
   size                            = var.vm_size
-  admin_username                  = var.username
+  admin_username                  = var.admin_username
   disable_password_authentication = true
 
   custom_data = base64encode(templatefile("${path.module}/templates/bootstrap-script.tpl", {
-    username               = var.username
-    password               = var.password
+    admin_username         = var.admin_username
+    admin_password         = var.admin_password
     ssh_public_key         = var.ssh_public_key
     ssh_private_key_base64 = var.ssh_private_key_base64
-    ssh_passphrase         = var.ssh_passphrase
-    email                  = var.email
-    name                   = var.name
+    awx_admin_password     = var.awx_admin_password
+    git_name               = var.git_name
+    git_email              = var.git_email
+    minikube_cpus          = var.minikube_cpus
+    minikube_memory        = var.minikube_memory
+    inventory              = join(" ", var.inventory)
   }))
 
   network_interface_ids = [
@@ -33,7 +36,7 @@ resource "azurerm_linux_virtual_machine" "this" {
   ]
 
   admin_ssh_key {
-    username   = var.username
+    username   = var.admin_username
     public_key = var.ssh_public_key
   }
 
@@ -44,4 +47,12 @@ resource "azurerm_linux_virtual_machine" "this" {
   }
 
   source_image_id = var.source_image_id
+}
+
+resource "azurerm_private_dns_a_record" "this" {
+  name                = "ansible"
+  zone_name           = var.private_dns_zone
+  resource_group_name = var.resource_group_name
+  ttl                 = 300
+  records             = [azurerm_linux_virtual_machine.this.private_ip_address]
 }

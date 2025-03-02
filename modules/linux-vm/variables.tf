@@ -28,7 +28,7 @@ variable "subnet_id" {
   description = "The subnet in which to deploy the VM."
 }
 
-variable "username" {
+variable "admin_username" {
   type        = string
   description = "The SSH username for accessing the VM."
 }
