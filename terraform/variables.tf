@@ -48,12 +48,6 @@ variable "ssh_private_key_base64" {
   sensitive   = true
 }
 
-variable "awx_admin_password" {
-  type        = string
-  description = "The admin password to log into AWX."
-  sensitive   = true
-}
-
 variable "tailscale_subnet_router_auth_key" {
   type        = string
   description = "Used to authenticate subnet-router VMs without an interactive login."

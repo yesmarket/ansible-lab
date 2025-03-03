@@ -9,3 +9,11 @@ output "private_dns_resolver_private_ip" {
 output "ansible_control_node_private_ip" {
   value = module.ansible_control_node.private_ip
 }
+
+output "awx_location" {
+  value = "http://ansible.${var.private_dns}:${module.ansible_control_node.awx_port}"
+}
+
+output "awx_admin_password" {
+  value = module.ansible_control_node.awx_admin_password
+}

@@ -112,7 +112,6 @@ module "ansible_control_node" {
   admin_password         = var.admin_password
   ssh_public_key         = var.ssh_public_key
   ssh_private_key_base64 = var.ssh_private_key_base64
-  awx_admin_password     = var.awx_admin_password
   git_email              = var.git_email
   git_name               = var.git_name
   private_dns_zone       = azurerm_private_dns_zone.this.name

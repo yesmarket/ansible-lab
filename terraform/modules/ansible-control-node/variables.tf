@@ -40,12 +40,6 @@ variable "ssh_private_key_base64" {
   sensitive   = true
 }
 
-variable "awx_admin_password" {
-  type        = string
-  description = "The admin password to log into AWX."
-  sensitive   = true
-}
-
 variable "vm_size" {
   type        = string
   description = "The size of the ansible control node VM."

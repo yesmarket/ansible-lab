@@ -147,3 +147,6 @@ sudo -u ${admin_username} bash -c "
   port=\$(minikube service awx-ubuntu-service --url -n ansible-awx | cut -d ':' -f 3)
   kubectl port-forward service/awx-ubuntu-service -n ansible-awx --address 0.0.0.0 \$port:80 &> /dev/null &
 "
+
+# Signal script completion
+touch /var/lib/cloud/instance/boot-finished
