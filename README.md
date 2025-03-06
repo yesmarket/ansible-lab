@@ -1,6 +1,6 @@
 # Overview
 
-Sets up an Ansible lab environment in Azure
+Sets up an Ansible lab environment in Azure using Terraform (and Packer)
 
 The lab deploys the following components:
 - A virtual network in Azure with a NAT gateway for access to the Internet.
