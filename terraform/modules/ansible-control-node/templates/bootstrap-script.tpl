@@ -145,8 +145,48 @@ sudo -u ${admin_username} bash -c "
 
   echo 'AWX service detected. Setting up port forwarding...'
   port=\$(minikube service awx-ubuntu-service --url -n ansible-awx | cut -d ':' -f 3)
-  kubectl port-forward service/awx-ubuntu-service -n ansible-awx --address 0.0.0.0 \$port:80 &> /dev/null &
+
+
+  cat > /etc/nginx/sites-available/awx <<EOF
+  server {
+  	listen 80;
+  	location / {
+  		proxy_pass http://127.0.0.1:$port;  # Dynamically use the AWX NodePort
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    }
+  }
+  EOF
 "
 
-# Signal script completion
+sudo -u ${admin_username} bash -c "
+  echo 'Waiting for AWX service to be created...'
+  while ! kubectl get svc -n ansible-awx | grep -q 'awx-ubuntu-service'; do
+    sleep 10
+  done
+
+  echo 'AWX service detected. Setting up NGINX reverse proxy...'
+  url=\$(minikube service awx-ubuntu-service -n ansible-awx --url)
+
+  echo 'Creating NGINX configuration...'
+  sudo tee /etc/nginx/sites-available/awx > /dev/null <<EOF
+server {
+    listen 80;
+    location / {
+        proxy_pass \$url;
+        proxy_set_header Host \\$host;
+        proxy_set_header X-Real-IP \\$remote_addr;
+        proxy_set_header X-Forwarded-For \\$proxy_add_x_forwarded_for;
+    }
+}
+EOF
+
+  sudo ln -sf /etc/nginx/sites-available/awx /etc/nginx/sites-enabled/
+  sudo rm -f /etc/nginx/sites-enabled/default  # Remove default welcome page
+  sudo systemctl restart nginx
+  echo 'NGINX reverse proxy setup complete. AWX should be accessible on port 80.'
+"
+
+# Signal script complete
 touch /var/lib/cloud/instance/boot-finished

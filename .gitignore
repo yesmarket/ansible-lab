@@ -1,4 +1,5 @@
 # Local .terraform directories
+**/.terraform
 **/.terraform/*
 
 # .tfstate files
@@ -15,3 +16,5 @@ crash.*.log
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+**/*.lock.hcl

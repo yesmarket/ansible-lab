@@ -3,9 +3,6 @@ output "private_ip" {
 }
 
 output "awx_admin_password" {
-  value     = fileexists("awx_password.txt") ? file("awx_password.txt") : "Not available yet"
+  value = "see logs"
 }
 
-output "awx_port" {
-  value = fileexists("awx_port.txt") ? file("awx_port.txt") : "Not available yet"
-}

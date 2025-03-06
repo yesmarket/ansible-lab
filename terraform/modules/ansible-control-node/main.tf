@@ -81,9 +81,9 @@ resource "null_resource" "wait_for_cloud_init" {
   }
 }
 
-resource "null_resource" "get_awx_credentials" {
+resource "null_resource" "get_awx_admin_password" {
   triggers = {
-    vm_id = azurerm_linux_virtual_machine.this.id
+    vm_id            = azurerm_linux_virtual_machine.this.id
     custom_data_hash = md5(azurerm_linux_virtual_machine.this.custom_data)
   }
 
@@ -99,33 +99,8 @@ resource "null_resource" "get_awx_credentials" {
 
     inline = [
       "echo 'Fetching AWX admin password...'",
-      "kubectl get secret awx-ubuntu-admin-password -n ansible-awx -o jsonpath='{.data.password}' | base64 --decode > /tmp/awx_password",
-      "echo 'Fetching AWX service port...'",
-      "minikube service awx-ubuntu-service --url -n ansible-awx | cut -d ':' -f 3 > /tmp/awx_port"
+      "export AWX_PASSWORD=$(kubectl get secret awx-ubuntu-admin-password -n ansible-awx -o jsonpath='{.data.password}' | base64 --decode)",
+      "echo \"AWX admin password: $AWX_PASSWORD\""
     ]
-  }
-}
-
-resource "null_resource" "fetch_awx_outputs" {
-  triggers = {
-    vm_id = azurerm_linux_virtual_machine.this.id
-    custom_data_hash = md5(azurerm_linux_virtual_machine.this.custom_data)
-  }
-
-  depends_on = [null_resource.get_awx_credentials]
-
-  provisioner "local-exec" {
-    command = <<EOT
-      echo '${base64decode(var.ssh_private_key_base64)}' > id_rsa
-      chmod 600 id_rsa
-
-      AWX_PASSWORD=$(ssh -o StrictHostKeyChecking=no -i id_rsa ${var.admin_username}@${azurerm_linux_virtual_machine.this.private_ip_address} "cat /tmp/awx_password")
-      AWX_PORT=$(ssh -o StrictHostKeyChecking=no -i id_rsa ${var.admin_username}@${azurerm_linux_virtual_machine.this.private_ip_address} "cat /tmp/awx_port")
-
-      echo "$AWX_PASSWORD" > awx_password.txt
-      echo "$AWX_PORT" > awx_port.txt
-
-      rm -f id_rsa
-    EOT
   }
 }

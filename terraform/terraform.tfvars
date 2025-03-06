@@ -1,10 +1,9 @@
 tenant_id                = "f36345b5-4c52-46d7-a323-aae46db9d7d1"
 client_id                = "c2be7309-c4b9-4ec5-ae34-58d2d7a4366d"
 subscription_id          = "46934691-fbae-44fe-abb8-900c33ca8095"
-#subscription_id 		 = "1127d5c9-157b-48b2-9220-9795765f71ac"
 ssh_public_key           = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDIMLS/4BNziN9myzw6DxJjL9erQKDMZOa1opco6QPiybBHH4pbamh26dVjkLwy0KGexYQJ+tCb/koWPVHSCTt5KZJrYx0jLXCI63LQ6TMB+DJLkiii5QGv9KR00ux/jo3E7F01VUkYxRryc3uHujE7FUk0jQJtG8LrdvsZFK+xQJr54JcO0bnTEeUwhP6o8REFqIJPpti2BRxCFfdbtDQAkRzoqyAR7ocXXqqDHCpO0Wg3kacQ/cMMfg6PYHmzZCI8Ofro9wyc7FoEExoTg2qsLDz7GbMrVtSzabpdvC6ixNyvaXvYyQ9WvVim1SZrWG0jsbuNJPHz6Gu7/w0mtB4x rbartsch@yandex.com"
 tailscale_subnet_routers = ["primary"]
 private_dns              = "ryanbartsch.com"
 inventory                = ["test1", "test2"]
-git_email			     = "rbartsch@yandex.com"
-git_name				 = "Ryan Bartsch"
+git_email                = "rbartsch@yandex.com"
+git_name                 = "Ryan Bartsch"

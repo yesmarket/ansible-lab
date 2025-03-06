@@ -37,7 +37,7 @@ variable "ssh_public_key" {
 variable "ssh_private_key_base64" {
   type        = string
   description = "The base64 value of the SSH private key to access VMs."
-  sensitive   = true
+  #sensitive   = true
 }
 
 variable "vm_size" {

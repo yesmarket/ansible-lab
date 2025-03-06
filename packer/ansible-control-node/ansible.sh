@@ -52,5 +52,5 @@ sudo mv kubectl /usr/local/bin/
 #####################################
 # install other stuff
 #####################################
-sudo apt install git make -y
+sudo apt install git make nginx -y
 sudo python3 -m pip install argcomplete
