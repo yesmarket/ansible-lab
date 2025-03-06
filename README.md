@@ -30,7 +30,7 @@ Note: `admin_username`, `ansible_control_node_private_ip`, and `ansible_control_
 
 There's a Terraform output variable `awx_location`. Once the Terraform script is complete, open a web browser and navigate to the specified AWX location.
 
-You can login as the admin user with a username of `admin`. On completion of the Terraform script, the default AWX admin password will be output to `awx_admin_password`.
+You can login as the admin user with a username of `admin`. There were some challenges getting the AWX admin password to display as a Terraform output variable, so I just echo it out as part of the remote-exec provisioner in the `get_awx_admin_password` null resource (which runs after the ansible-control-node VM is provisioned and the custom_data init script has completed). It will appear near the end of the Terraform logs.
 
 Once you login for the first time, it's probably a good idea to change the AWX admin password.
 

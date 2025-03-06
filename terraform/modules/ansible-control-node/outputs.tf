@@ -3,6 +3,5 @@ output "private_ip" {
 }
 
 output "awx_admin_password" {
-  value = "see logs"
+  value = "see terraform logs above"
 }
-
